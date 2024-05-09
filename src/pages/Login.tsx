@@ -1,24 +1,31 @@
-import { Button } from "antd";
-import { FieldValues, useForm } from "react-hook-form";
+import { Button, Row } from "antd";
+import { FieldValues } from "react-hook-form";
 import { useLoginMutation } from "../redux/features/auth/authApi";
 import "./login.css";
-import { useState } from "react";
 import { useAppDispatch } from "../redux/features/hooks";
 import { TUser, setUser } from "../redux/features/auth/authSlice";
 import { verifyToken } from "../utils/verifyToken";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import PHForm from "../components/form/PHForm";
+import PHInput from "../components/form/PHInput";
+import { useState } from "react";
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { register, handleSubmit } = useForm({
-    defaultValues: {
-      id: "A-0001",
-      password: "admin123",
-    },
-  });
+  const [showPassword, setShowPassword] = useState(false);
+  // const { register } = useForm({
+  //   defaultValues: {
+  //     id: "A-0001",
+  //     password: "admin123",
+  //   },
+  // });
+  const defaultValues = {
+    id: "A-0001",
+    password: "admin123",
+  };
+
   const [login] = useLoginMutation();
   // const [login, { data, error }] = useLoginMutation();
   const onSubmit = async (data: FieldValues) => {
@@ -38,29 +45,23 @@ const Login = () => {
     }
   };
   return (
-    <div className="form-container">
-      <div className="form-wrapper">
-        <h1>Registration Form</h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor="id">Id:</label>
-          <input type="text" id="id" {...register("id")} />
-          <label htmlFor="password">Password:</label>
-          <input
+    <div>
+      <Row justify="center" align="middle" style={{ height: "100vh" }}>
+        <PHForm onSubmit={onSubmit} defaultValues={defaultValues}>
+          <PHInput type="text" name="id" label="ID:" />
+          <PHInput
             type={showPassword ? "text" : "password"}
-            id="password"
-            {...register("password")}
+            name="password"
+            label=" User Password"
           />
           <input
             type="checkbox"
             onChange={() => setShowPassword(!showPassword)}
-            name=""
-            id=""
-            className="show-password"
           />{" "}
-          <span>Show Password</span>
+          Show Password
           <Button htmlType="submit">Login</Button>
-        </form>
-      </div>
+        </PHForm>
+      </Row>
     </div>
   );
 };
