@@ -24,6 +24,9 @@ const PHForm = ({
   if (defaultValues) {
     formConfig["defaultValues"] = defaultValues;
   }
+  if (resolver) {
+    formConfig["resolver"] = resolver;
+  }
   const methods = useForm(formConfig);
   return (
     <FormProvider {...methods}>
