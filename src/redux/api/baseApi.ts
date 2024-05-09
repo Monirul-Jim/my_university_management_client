@@ -27,7 +27,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 > = async (args, api, extraOptions): Promise<any> => {
   let result = await baseQuery(args, api, extraOptions);
   if (result?.error?.status === 404) {
-    toast.error("User not found");
+    toast.error(result?.error?.data?.message);
   }
   if (result?.error?.status === 401) {
     // send refresh token
