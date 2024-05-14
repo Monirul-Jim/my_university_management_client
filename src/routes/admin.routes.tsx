@@ -3,9 +3,9 @@ import CreateAcademicDepartment from "../pages/admin/AcademicDepartment/CreateAc
 import AcademicFaculty from "../pages/admin/AcademicFaculty/AcademicFaculty";
 import CreateAcademicFaculty from "../pages/admin/AcademicFaculty/CreateAcademicFaculty";
 import AdminDashboard from "../pages/admin/AdminDashboard";
-import CreateAdmin from "../pages/admin/CreateAdmin";
-import CreateFaculty from "../pages/admin/CreateFaculty";
-import CreateStudent from "../pages/admin/CreateStudent";
+import CreateAdmin from "../pages/admin/userManagement/CreateAdmin";
+import CreateFaculty from "../pages/admin/userManagement/CreateFaculty";
+import CreateStudent from "../pages/admin/userManagement/CreateStudent";
 import AcademicSemester from "../pages/admin/academicManagement/AcademicSemester";
 import CreateAcademicSemester from "../pages/admin/academicManagement/CreateAcademicSemester";
 
