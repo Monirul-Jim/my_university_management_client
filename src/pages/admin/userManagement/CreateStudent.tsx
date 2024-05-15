@@ -7,8 +7,12 @@ import {
   bloodGroupOptions,
   genderOptions,
 } from "../../../components/constants/global";
-import { semesterOptions } from "../../../components/constants/semester";
 import PHDatePicker from "../../../components/form/PHDatePicker";
+import {
+  useGetAcademicDepartmentsQuery,
+  useGetAllSemesterQuery,
+} from "../../../redux/features/admin/academicManagement.api";
+import { useAddStudentMutation } from "../../../redux/features/admin/userManagement.api";
 
 const studentDummyData = {
   password: "student123",
@@ -78,13 +82,36 @@ const studentDefaultValues = {
   admissionSemester: "65bb60ebf71fdd1add63b1c0",
   academicDepartment: "65b4acae3dc8d4f3ad83e416",
 };
-const onSubmit: SubmitHandler<FieldValues> = (data) => {
-  console.log(data);
-  // const formData = new FormData();
-  // formData.append("data", JSON.stringify(data));
-  // console.log(Object.fromEntries(formData));
-};
+
 const CreateStudent = () => {
+  const [addStudent, { data, isError }] = useAddStudentMutation();
+  console.log(data, isError, "this is data and is error");
+  const { data: sData, isLoading: sIsLoading } =
+    useGetAllSemesterQuery(undefined);
+  const { data: dData, isLoading: dIsLoading } = useGetAcademicDepartmentsQuery(
+    undefined,
+    { skip: sIsLoading }
+  );
+  const semesterOptions = sData?.data?.map((item) => ({
+    value: item._id,
+    label: `${item.name} ${item.year}`,
+  }));
+  const departmentOptions = dData?.data?.map((item) => ({
+    value: item._id,
+    label: item.name,
+  }));
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const studentData = {
+      password: "student123",
+      student: data,
+    };
+    console.log(sData);
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(studentData));
+    formData.append("file", data?.image);
+    addStudent(formData);
+    // console.log(Object.fromEntries(formData));
+  };
   return (
     <Row justify="center">
       <Col span={24}>
@@ -236,6 +263,7 @@ const CreateStudent = () => {
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHSelect
                 options={semesterOptions}
+                disabled={sIsLoading}
                 name="admissionSemester"
                 label="Admission Semester"
               />
@@ -243,6 +271,7 @@ const CreateStudent = () => {
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHSelect
                 options={departmentOptions}
+                disabled={dIsLoading}
                 name="academicDepartment"
                 label="Admission Department"
               />
